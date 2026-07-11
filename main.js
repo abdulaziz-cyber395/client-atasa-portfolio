@@ -1,0 +1,241 @@
+const THEME_KEY = 'theme';
+
+function getStoredTheme() {
+    return localStorage.getItem(THEME_KEY);
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+}
+
+// Light is the default theme. Dark only applies if the visitor has explicitly
+// switched to it before (saved in localStorage) — we never auto-select dark
+// based on OS/browser color-scheme preference.
+applyTheme(getStoredTheme() === 'dark' ? 'dark' : 'light');
+
+// Delegated click handler for the theme toggle button in the nav.
+document.addEventListener('click', (e) => {
+    const btn = e.target.closest('#theme-toggle');
+    if (!btn) return;
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem(THEME_KEY, next);
+});
+
+function initLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    if (!lightbox) return;
+
+    const mediaEl = document.getElementById('lightbox-media');
+    const categoryEl = document.getElementById('lightbox-category');
+    const titleEl = document.getElementById('lightbox-title');
+    const descEl = document.getElementById('lightbox-desc');
+
+    function openLightbox(card) {
+        const type = card.dataset.type;
+        const src = card.dataset.src;
+        if (!src) return;
+
+        mediaEl.innerHTML = '';
+        if (type === 'video') {
+            const video = document.createElement('video');
+            video.setAttribute('controls', '');
+            video.setAttribute('autoplay', '');
+            video.setAttribute('playsinline', '');
+            if (card.dataset.poster) video.setAttribute('poster', card.dataset.poster);
+            const source = document.createElement('source');
+            source.src = src;
+            source.type = 'video/mp4';
+            video.appendChild(source);
+            mediaEl.appendChild(video);
+        } else {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = card.dataset.title || '';
+            mediaEl.appendChild(img);
+        }
+
+        categoryEl.textContent = card.dataset.category || '';
+        titleEl.textContent = card.dataset.title || '';
+        descEl.textContent = card.dataset.desc || '';
+
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('lightbox-open');
+    }
+
+    function closeLightbox() {
+        if (lightbox.getAttribute('aria-hidden') === 'true') return;
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('lightbox-open');
+        const video = mediaEl.querySelector('video');
+        if (video) {
+            video.pause();
+            video.removeAttribute('src');
+            video.load();
+        }
+        mediaEl.innerHTML = '';
+    }
+
+    document.addEventListener('click', (e) => {
+        const closer = e.target.closest('[data-lightbox-close]');
+        if (closer) {
+            closeLightbox();
+            return;
+        }
+        const card = e.target.closest('[data-lightbox]');
+        if (card) {
+            openLightbox(card);
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeLightbox();
+            return;
+        }
+        if ((e.key === 'Enter' || e.key === ' ') && document.activeElement && document.activeElement.hasAttribute('data-lightbox')) {
+            e.preventDefault();
+            openLightbox(document.activeElement);
+        }
+    });
+}
+
+function attachCardTilt(card) {
+    card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const img = card.querySelector('.portfolio-card-media img');
+        if (img) {
+            img.style.transform = `scale(1.08) translate(${x * 6}px, ${y * 6}px)`;
+        }
+    });
+    card.addEventListener('mouseleave', e => {
+        const img = card.querySelector('.portfolio-card-media img');
+        if (img) {
+            img.style.transform = 'scale(1) translate(0, 0)';
+        }
+    });
+}
+
+function buildPortfolioCard(project) {
+    const article = document.createElement('article');
+    article.className = 'portfolio-card';
+    article.tabIndex = 0;
+    article.setAttribute('role', 'button');
+    article.setAttribute('data-lightbox', '');
+    article.setAttribute('data-type', project.type);
+    article.setAttribute('data-src', project.src);
+    if (project.poster) article.setAttribute('data-poster', project.poster);
+    article.setAttribute('data-category', project.category || '');
+    article.setAttribute('data-title', project.title || '');
+    article.setAttribute('data-desc', project.desc || '');
+
+    const media = document.createElement('div');
+    media.className = 'portfolio-card-media';
+
+    const img = document.createElement('img');
+    img.loading = 'lazy';
+    img.alt = project.title || '';
+    img.src = project.type === 'video' ? (project.poster || '') : project.src;
+    media.appendChild(img);
+
+    if (project.type === 'video') {
+        const badge = document.createElement('span');
+        badge.className = 'play-badge';
+        badge.setAttribute('aria-hidden', 'true');
+        badge.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+        media.appendChild(badge);
+    }
+
+    const overlay = document.createElement('div');
+    overlay.className = 'portfolio-card-overlay';
+
+    const content = document.createElement('div');
+    content.className = 'portfolio-card-content';
+    content.innerHTML = `
+        <span class="portfolio-category">${project.category || ''}</span>
+        <h3 class="portfolio-title">${project.title || ''}</h3>
+        <p class="portfolio-desc">${project.desc || ''}</p>
+    `;
+
+    article.appendChild(media);
+    article.appendChild(overlay);
+    article.appendChild(content);
+    return article;
+}
+
+function initPortfolioExtras() {
+    const grids = document.querySelectorAll('.portfolio-grid');
+    if (!grids.length) return;
+
+    fetch('data/portfolio-extra.json')
+        .then(res => (res.ok ? res.json() : null))
+        .then(data => {
+            if (!data || !Array.isArray(data.projects)) return;
+            data.projects.forEach(project => {
+                const section = document.getElementById(project.section);
+                const grid = section ? section.querySelector('.portfolio-grid') : null;
+                if (!grid) return;
+                const card = buildPortfolioCard(project);
+                grid.appendChild(card);
+                attachCardTilt(card);
+            });
+        })
+        .catch(() => {
+            // No hosted data file (or opened via file://, where fetch of local
+            // files is blocked) — the static portfolio still displays fine.
+        });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initLightbox();
+    initPortfolioExtras();
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.classList.toggle('active', link.href === window.location.href);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const glow = document.querySelector('.cursor-glow');
+    if (glow) {
+        document.addEventListener('mousemove', e => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
+    }
+
+    const heroImg = document.querySelector('.hero-media img');
+    if (heroImg) {
+        heroImg.classList.add('hero-parallax');
+        window.addEventListener('scroll', () => {
+            heroImg.style.transform = `translateY(${window.pageYOffset * 0.35}px)`;
+        }, { passive: true });
+    }
+
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+        const nav = document.querySelector('.nav');
+        const progress = document.querySelector('.nav-progress');
+        const current = window.pageYOffset;
+
+        if (nav) {
+            nav.classList.toggle('nav-hidden', current > lastScroll && current > 250);
+        }
+        if (progress) {
+            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = scrollable > 0 ? current / scrollable : 0;
+            progress.style.transform = `scaleX(${pct})`;
+        }
+        lastScroll = current;
+    }, { passive: true });
+
+    document.querySelectorAll('.portfolio-card').forEach(attachCardTilt);
+});

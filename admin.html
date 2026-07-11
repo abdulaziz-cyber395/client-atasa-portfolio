@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <script>
+        (function () {
+            var t = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+    <title>Portfolio Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { min-height: 100vh; display: flex; flex-direction: column; }
+        .admin-wrap {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: clamp(24px, 5vw, 60px) var(--container-padding) 80px;
+            flex: 1;
+        }
+        .admin-header { margin-bottom: 2.5rem; text-align: center; }
+        .admin-header h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 0.5rem; }
+        .admin-header p { color: var(--text-muted); max-width: 50ch; margin: 0 auto; }
+
+        .admin-panel {
+            display: none;
+        }
+        .admin-panel.is-visible { display: block; }
+
+        .admin-gate {
+            max-width: 380px;
+            margin: 10vh auto 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: clamp(28px, 4vw, 40px);
+            text-align: center;
+        }
+        .admin-gate h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .admin-gate p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+        .admin-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: clamp(24px, 3vw, 36px);
+            margin-bottom: 1.5rem;
+        }
+        .admin-card h2 {
+            font-size: 1.1rem;
+            font-family: var(--font-label);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--text-main);
+        }
+
+        .admin-input, .admin-select, .admin-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        .admin-textarea { resize: vertical; min-height: 80px; }
+        .admin-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+        .admin-field { margin-bottom: 1.1rem; }
+        .admin-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .admin-radio-group { display: flex; gap: 1.5rem; margin-bottom: 1rem; }
+        .admin-radio-group label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; }
+
+        .admin-note {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-top: 0.5rem;
+        }
+        .admin-banner {
+            background: var(--bg-tertiary);
+            border-left: 3px solid var(--accent);
+            padding: 14px 18px;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        .admin-banner.success { border-left-color: #2E8B57; }
+        .admin-banner.error { border-left-color: var(--accent); color: var(--accent); }
+
+        .admin-project-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .admin-project-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+        }
+        .admin-project-item img {
+            width: 56px;
+            height: 56px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .admin-project-info { flex: 1; min-width: 0; }
+        .admin-project-info strong { display: block; font-size: 0.92rem; color: var(--text-main); }
+        .admin-project-info span { display: block; font-size: 0.78rem; color: var(--text-muted); }
+        .admin-empty { color: var(--text-muted); font-size: 0.9rem; }
+
+        .admin-btn-danger {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 14px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            flex-shrink: 0;
+        }
+        .admin-btn-danger:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .admin-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            display: none;
+        }
+        .admin-preview.is-visible { display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-wrap">
+        <div class="admin-header">
+            <h1>Portfolio Admin</h1>
+            <p>Add or remove portfolio projects. Changes save automatically and appear on the site right away.</p>
+        </div>
+
+        <div id="admin-banners"></div>
+
+        <div class="admin-gate" id="gate-unlock" style="display:none;">
+            <h2>Enter PIN</h2>
+            <p>This page is private. Enter your admin PIN to continue.</p>
+            <div class="admin-field">
+                <input type="password" class="admin-input" id="unlock-pin" placeholder="PIN" autocomplete="off">
+            </div>
+            <button type="button" class="btn btn-primary" id="unlock-btn" style="width:100%;">Unlock</button>
+        </div>
+
+        <div class="admin-gate" id="gate-setup" style="display:none;">
+            <h2>Set Up Your Admin PIN</h2>
+            <p>No PIN has been configured yet. Choose one now — you'll need it every time you come back to this page.</p>
+            <div class="admin-field">
+                <input type="password" class="admin-input" id="setup-pin" placeholder="New PIN" autocomplete="off">
+            </div>
+            <div class="admin-field">
+                <input type="password" class="admin-input" id="setup-pin-confirm" placeholder="Confirm PIN" autocomplete="off">
+            </div>
+            <button type="button" class="btn btn-primary" id="setup-btn" style="width:100%;">Set PIN & Continue</button>
+        </div>
+
+        <div class="admin-panel" id="panel">
+            <div class="admin-card">
+                <h2>Current Projects</h2>
+                <div class="admin-project-list" id="project-list"></div>
+            </div>
+
+            <div class="admin-card">
+                <h2>Add New Project</h2>
+                <div class="admin-field">
+                    <label class="admin-label">Section</label>
+                    <select class="admin-select" id="f-section">
+                        <option value="photography-portfolio">Photography</option>
+                        <option value="videography-portfolio">Videography</option>
+                        <option value="documentary-portfolio">Documentaries</option>
+                        <option value="live-events-portfolio">Live Events</option>
+                    </select>
+                </div>
+
+                <div class="admin-radio-group">
+                    <label><input type="radio" name="f-type" value="image" checked> Photo</label>
+                    <label><input type="radio" name="f-type" value="video"> Video</label>
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label">Title</label>
+                    <input type="text" class="admin-input" id="f-title" placeholder="e.g. Golden Hour Portrait Session">
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label">Category Label</label>
+                    <input type="text" class="admin-input" id="f-category" placeholder="e.g. Editorial Portrait">
+                </div>
+
+                <div class="admin-field">
+                    <label class="admin-label">Description</label>
+                    <textarea class="admin-textarea" id="f-desc" placeholder="A short one or two sentence description."></textarea>
+                </div>
+
+                <div id="field-image" class="admin-field">
+                    <label class="admin-label">Photo</label>
+                    <input type="file" class="admin-input" id="f-image" accept="image/*">
+                    <img class="admin-preview" id="f-image-preview" alt="Preview">
+                    <p class="admin-note">Large photos are automatically resized before saving.</p>
+                </div>
+
+                <div id="field-video" class="admin-field" style="display:none;">
+                    <label class="admin-label">Video URL</label>
+                    <input type="text" class="admin-input" id="f-video-url" placeholder="Direct link to a hosted .mp4 file">
+                    <label class="admin-label">Thumbnail Photo</label>
+                    <input type="file" class="admin-input" id="f-video-poster" accept="image/*">
+                    <img class="admin-preview" id="f-video-poster-preview" alt="Preview">
+                </div>
+
+                <button type="button" class="btn btn-primary" id="add-btn">Add Project</button>
+            </div>
+
+            <div class="admin-card">
+                <h2>Change PIN</h2>
+                <div class="admin-row">
+                    <input type="password" class="admin-input" id="change-pin" placeholder="New PIN">
+                    <input type="password" class="admin-input" id="change-pin-confirm" placeholder="Confirm New PIN">
+                </div>
+                <button type="button" class="btn btn-outline" id="change-pin-btn">Update PIN</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'api/save-project.php';
+        let projects = [];
+        let currentPin = '';
+
+        function banner(msg, type) {
+            const el = document.createElement('div');
+            el.className = 'admin-banner' + (type ? ' ' + type : '');
+            el.textContent = msg;
+            document.getElementById('admin-banners').appendChild(el);
+        }
+
+        async function callApi(payload) {
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            let body;
+            try {
+                body = await res.json();
+            } catch (e) {
+                throw new Error('The server did not return a valid response. This admin page needs PHP-enabled hosting — check with your host that PHP is turned on.');
+            }
+            if (!res.ok || !body.ok) {
+                throw new Error(body.error || 'Something went wrong.');
+            }
+            return body;
+        }
+
+        function resizeImageFile(file, maxDim, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        let width = img.width, height = img.height;
+                        if (width > maxDim || height > maxDim) {
+                            if (width >= height) {
+                                height = Math.round(height * (maxDim / width));
+                                width = maxDim;
+                            } else {
+                                width = Math.round(width * (maxDim / height));
+                                height = maxDim;
+                            }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function showGate(hasPin) {
+            if (hasPin) {
+                document.getElementById('gate-unlock').style.display = 'block';
+            } else {
+                document.getElementById('gate-setup').style.display = 'block';
+            }
+        }
+
+        function unlockPanel() {
+            document.getElementById('gate-unlock').style.display = 'none';
+            document.getElementById('gate-setup').style.display = 'none';
+            document.getElementById('panel').classList.add('is-visible');
+            renderProjectList();
+        }
+
+        function renderProjectList() {
+            const list = document.getElementById('project-list');
+            list.innerHTML = '';
+            if (!projects.length) {
+                list.innerHTML = '<p class="admin-empty">No projects added here yet.</p>';
+                return;
+            }
+            projects.forEach((p) => {
+                const row = document.createElement('div');
+                row.className = 'admin-project-item';
+                const thumbSrc = p.type === 'video' ? p.poster : p.src;
+                row.innerHTML = `
+                    <img src="${thumbSrc}" alt="">
+                    <div class="admin-project-info">
+                        <strong>${p.title}</strong>
+                        <span>${p.category} &middot; ${p.section.replace('-portfolio', '')}</span>
+                    </div>
+                    <button type="button" class="admin-btn-danger" data-remove="${p.id}">Remove</button>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function resetForm() {
+            document.getElementById('f-title').value = '';
+            document.getElementById('f-category').value = '';
+            document.getElementById('f-desc').value = '';
+            document.getElementById('f-image').value = '';
+            document.getElementById('f-video-url').value = '';
+            document.getElementById('f-video-poster').value = '';
+            document.getElementById('f-image-preview').classList.remove('is-visible');
+            document.getElementById('f-video-poster-preview').classList.remove('is-visible');
+            pendingImageData = '';
+            pendingPosterData = '';
+        }
+
+        let pendingImageData = '';
+        let pendingPosterData = '';
+
+        async function init() {
+            try {
+                const status = await callApi({ action: 'status' });
+                showGate(status.hasPin);
+            } catch (e) {
+                banner(e.message, 'error');
+            }
+        }
+
+        document.getElementById('unlock-btn').addEventListener('click', async () => {
+            const pin = document.getElementById('unlock-pin').value;
+            try {
+                const res = await callApi({ action: 'verify', pin });
+                currentPin = pin;
+                projects = res.projects || [];
+                unlockPanel();
+            } catch (e) {
+                banner(e.message, 'error');
+            }
+        });
+
+        document.getElementById('setup-btn').addEventListener('click', async () => {
+            const pin = document.getElementById('setup-pin').value;
+            const confirmPin = document.getElementById('setup-pin-confirm').value;
+            if (!pin || pin.length < 4) {
+                banner('Choose a PIN of at least 4 characters.', 'error');
+                return;
+            }
+            if (pin !== confirmPin) {
+                banner('PINs do not match.', 'error');
+                return;
+            }
+            try {
+                const res = await callApi({ action: 'setPin', newPin: pin });
+                currentPin = pin;
+                projects = res.projects || [];
+                banner('PIN set. Keep it safe — you\'ll need it next time you come back here.', 'success');
+                unlockPanel();
+            } catch (e) {
+                banner(e.message, 'error');
+            }
+        });
+
+        document.querySelectorAll('input[name="f-type"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                const isVideo = document.querySelector('input[name="f-type"]:checked').value === 'video';
+                document.getElementById('field-image').style.display = isVideo ? 'none' : 'block';
+                document.getElementById('field-video').style.display = isVideo ? 'block' : 'none';
+            });
+        });
+
+        document.getElementById('f-image').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            pendingImageData = await resizeImageFile(file, 1600, 0.82);
+            const preview = document.getElementById('f-image-preview');
+            preview.src = pendingImageData;
+            preview.classList.add('is-visible');
+        });
+
+        document.getElementById('f-video-poster').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            pendingPosterData = await resizeImageFile(file, 1200, 0.82);
+            const preview = document.getElementById('f-video-poster-preview');
+            preview.src = pendingPosterData;
+            preview.classList.add('is-visible');
+        });
+
+        document.getElementById('add-btn').addEventListener('click', async () => {
+            const type = document.querySelector('input[name="f-type"]:checked').value;
+            const title = document.getElementById('f-title').value.trim();
+            const category = document.getElementById('f-category').value.trim();
+            const desc = document.getElementById('f-desc').value.trim();
+            const section = document.getElementById('f-section').value;
+
+            if (!title || !category || !desc) {
+                banner('Please fill in the title, category, and description.', 'error');
+                return;
+            }
+
+            const project = { section, type, title, category, desc };
+
+            if (type === 'image') {
+                if (!pendingImageData) {
+                    banner('Please choose a photo.', 'error');
+                    return;
+                }
+                project.src = pendingImageData;
+            } else {
+                const url = document.getElementById('f-video-url').value.trim();
+                if (!url) {
+                    banner('Please provide a video URL.', 'error');
+                    return;
+                }
+                if (!pendingPosterData) {
+                    banner('Please choose a thumbnail photo for the video.', 'error');
+                    return;
+                }
+                project.src = url;
+                project.poster = pendingPosterData;
+            }
+
+            const addBtn = document.getElementById('add-btn');
+            addBtn.disabled = true;
+            addBtn.textContent = 'Saving…';
+            try {
+                const res = await callApi({ action: 'add', pin: currentPin, project });
+                projects = res.projects || [];
+                renderProjectList();
+                resetForm();
+                banner('Project added — it\'s live on the site now.', 'success');
+            } catch (e) {
+                banner(e.message, 'error');
+            } finally {
+                addBtn.disabled = false;
+                addBtn.textContent = 'Add Project';
+            }
+        });
+
+        document.getElementById('project-list').addEventListener('click', async (e) => {
+            const btn = e.target.closest('[data-remove]');
+            if (!btn) return;
+            btn.disabled = true;
+            try {
+                const res = await callApi({ action: 'delete', pin: currentPin, id: btn.dataset.remove });
+                projects = res.projects || [];
+                renderProjectList();
+                banner('Project removed.', 'success');
+            } catch (e) {
+                banner(e.message, 'error');
+                btn.disabled = false;
+            }
+        });
+
+        document.getElementById('change-pin-btn').addEventListener('click', async () => {
+            const pin = document.getElementById('change-pin').value;
+            const confirmPin = document.getElementById('change-pin-confirm').value;
+            if (!pin || pin.length < 4) {
+                banner('Choose a PIN of at least 4 characters.', 'error');
+                return;
+            }
+            if (pin !== confirmPin) {
+                banner('PINs do not match.', 'error');
+                return;
+            }
+            try {
+                await callApi({ action: 'changePin', pin: currentPin, newPin: pin });
+                currentPin = pin;
+                document.getElementById('change-pin').value = '';
+                document.getElementById('change-pin-confirm').value = '';
+                banner('PIN updated.', 'success');
+            } catch (e) {
+                banner(e.message, 'error');
+            }
+        });
+
+        init();
+    </script>
+
+</body>
+</html>

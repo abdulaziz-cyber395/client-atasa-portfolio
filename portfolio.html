@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        (function () {
+            var t = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+    <title>Portfolio | KAFUI'S MEDIA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="preload" as="image" href="external/MY%20PORTFOLIO/heroimg.jpg" fetchpriority="high">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">KAFUI'S <em>MEDIA</em></a>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="services.html">Services</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme">
+                    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/></svg>
+                    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"/></svg>
+                </button>
+                <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="nav-progress" aria-hidden="true"></div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-banner" id="portfolio-intro">
+            <div class="page-banner-bg">
+                <img src="external/MY%20PORTFOLIO/heroimg.jpg" alt="" loading="eager">
+            </div>
+            <div class="page-banner-content">
+                <span class="page-banner-eyebrow">Portfolio</span>
+                <h1>The Showcase Vault</h1>
+                <p>Explore real-world case studies across our core production categories. Each project is a story captured through our lens.</p>
+            </div>
+        </section>
+
+        <section class="section-tight" id="portfolio-filters">
+            <div class="container">
+                <div class="filter-bar">
+                    <a href="#photography-portfolio" class="btn btn-outline btn-sm">Photography</a>
+                    <a href="#videography-portfolio" class="btn btn-outline btn-sm">Videography</a>
+                    <a href="#documentary-portfolio" class="btn btn-outline btn-sm">Documentaries</a>
+                    <a href="#live-events-portfolio" class="btn btn-outline btn-sm">Live Events</a>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <section class="section" id="photography-portfolio">
+            <div class="container">
+                <div class="section-header">
+                    <span class="portfolio-category category-centered">Category</span>
+                    <h2>Photography</h2>
+                    <p>Editorial precision. Commercial impact. Every frame engineered for attention.</p>
+                </div>
+
+                <div class="portfolio-grid portfolio-section-spacer">
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="assets/img/photo-coastal-portrait.jpg" data-category="Environmental Portraiture" data-title="Coastal Portrait Session" data-desc="A location portrait session shot along the coastline, pairing natural light with a dramatic sky.">
+                        <div class="portfolio-card-media">
+                            <img src="assets/img/photo-coastal-portrait.jpg" alt="Coastal environmental portrait" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Environmental Portraiture</span>
+                            <h3 class="portfolio-title">Coastal Portrait Session</h3>
+                            <p class="portfolio-desc">A location portrait session shot along the coastline, pairing natural light with a dramatic sky.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="assets/img/photo-candid-portrait.jpg" data-category="Candid Portraiture" data-title="Campus Candid Series" data-desc="Candid, natural-light portraits captured in the middle of a live campus event.">
+                        <div class="portfolio-card-media">
+                            <img src="assets/img/photo-candid-portrait.jpg" alt="Candid campus portrait" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Candid Portraiture</span>
+                            <h3 class="portfolio-title">Campus Candid Series</h3>
+                            <p class="portfolio-desc">Candid, natural-light portraits captured in the middle of a live campus event.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="assets/img/photo-studio-portrait.jpg" data-category="Editorial Studio" data-title="Styled Studio Session" data-desc="A creative studio portrait built on gel lighting, wardrobe styling, and confident direction.">
+                        <div class="portfolio-card-media">
+                            <img src="assets/img/photo-studio-portrait.jpg" alt="Styled studio portrait" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Editorial Studio</span>
+                            <h3 class="portfolio-title">Styled Studio Session</h3>
+                            <p class="portfolio-desc">A creative studio portrait built on gel lighting, wardrobe styling, and confident direction.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="external/PICS/IMG_0015.JPG" data-category="Editorial Portrait" data-title="Low-Key Editorial Portrait" data-desc="A moody, low-key portrait built around a single directional light source.">
+                        <div class="portfolio-card-media">
+                            <img src="external/PICS/IMG_0015.JPG" alt="Dramatic low-key portrait" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Editorial Portrait</span>
+                            <h3 class="portfolio-title">Low-Key Editorial Portrait</h3>
+                            <p class="portfolio-desc">A moody, low-key portrait built around a single directional light source.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="external/MY%20GALLERY/IMG_9773.jpg" data-category="Styled Portraiture" data-title="Natural Light Styled Portrait" data-desc="A bright, natural-light portrait built around playful styling and expression.">
+                        <div class="portfolio-card-media">
+                            <img src="external/MY%20GALLERY/IMG_9773.jpg" alt="Styled portrait with hair accessories" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Styled Portraiture</span>
+                            <h3 class="portfolio-title">Natural Light Styled Portrait</h3>
+                            <p class="portfolio-desc">A bright, natural-light portrait built around playful styling and expression.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="external/PICS/IMG_1098.jpg" data-category="Outdoor Portraiture" data-title="Relaxed Outdoor Portrait" data-desc="A relaxed, candid-style outdoor portrait shot in natural daylight.">
+                        <div class="portfolio-card-media">
+                            <img src="external/PICS/IMG_1098.jpg" alt="Relaxed outdoor portrait" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Outdoor Portraiture</span>
+                            <h3 class="portfolio-title">Relaxed Outdoor Portrait</h3>
+                            <p class="portfolio-desc">A relaxed, candid-style outdoor portrait shot in natural daylight.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <section class="section" id="videography-portfolio">
+            <div class="container">
+                <div class="section-header">
+                    <span class="portfolio-category category-centered">Category</span>
+                    <h2>Videography</h2>
+                    <p>Motion assets with punchy pacing, cinematic color grading, and conversion-focused storytelling.</p>
+                </div>
+
+                <div class="portfolio-grid portfolio-section-spacer">
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="video" data-src="assets/video/promo-reel.mp4" data-poster="assets/img/featured-promo-poster.jpg" data-category="Promotional Video" data-title="Brand Promo & Contact Card Edit" data-desc="An After Effects-driven promotional edit featuring animated titles and a branded contact card.">
+                        <div class="portfolio-card-media">
+                            <img src="assets/img/featured-promo-poster.jpg" alt="Brand Promo & Contact Card Edit video preview" loading="lazy">
+                            <span class="play-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Promotional Video</span>
+                            <h3 class="portfolio-title">Brand Promo & Contact Card Edit</h3>
+                            <p class="portfolio-desc">An After Effects-driven promotional edit featuring animated titles and a branded contact card.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="video" data-src="assets/video/ad-cutdown.mp4" data-poster="assets/img/video-ad-poster.jpg" data-category="Commercial Ad Edit" data-title="Product Commercial Cutdown" data-desc="A short-form vertical product commercial edit, cut for social distribution.">
+                        <div class="portfolio-card-media">
+                            <img src="assets/img/video-ad-poster.jpg" alt="Product Commercial Cutdown video preview" loading="lazy">
+                            <span class="play-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Commercial Ad Edit</span>
+                            <h3 class="portfolio-title">Product Commercial Cutdown</h3>
+                            <p class="portfolio-desc">A short-form vertical product commercial edit, cut for social distribution.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="video" data-src="assets/video/logo-reveal.mp4" data-poster="assets/img/video-logo-poster.jpg" data-category="Brand Animation" data-title="Logo Reveal Animation" data-desc="An animated logo reveal and outro bumper built for brand identity use.">
+                        <div class="portfolio-card-media">
+                            <img src="assets/img/video-logo-poster.jpg" alt="Logo Reveal Animation video preview" loading="lazy">
+                            <span class="play-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Brand Animation</span>
+                            <h3 class="portfolio-title">Logo Reveal Animation</h3>
+                            <p class="portfolio-desc">An animated logo reveal and outro bumper built for brand identity use.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <section class="section" id="documentary-portfolio">
+            <div class="container">
+                <div class="section-header">
+                    <span class="portfolio-category category-centered">Category</span>
+                    <h2>Documentaries</h2>
+                    <p>Deep-dive narrative storytelling fused with prestige cinema aesthetics.</p>
+                </div>
+
+                <div class="portfolio-grid portfolio-section-spacer">
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="video" data-src="assets/video/documentary-cut.mp4" data-poster="assets/img/doc-cut-poster.jpg" data-category="Documentary Edit" data-title="Archival Documentary Cut" data-desc="A short-form documentary edit sample demonstrating narrative pacing, sound and color-grade work on archival footage.">
+                        <div class="portfolio-card-media">
+                            <img src="assets/img/doc-cut-poster.jpg" alt="Archival Documentary Cut video preview" loading="lazy">
+                            <span class="play-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Documentary Edit</span>
+                            <h3 class="portfolio-title">Archival Documentary Cut</h3>
+                            <p class="portfolio-desc">A short-form documentary edit sample demonstrating narrative pacing, sound and color-grade work on archival footage.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="video" data-src="assets/video/title-card.mp4" data-poster="assets/img/doc-title-poster.jpg" data-category="Title Sequence" data-title="Documentary Title Card" data-desc="An opening title and intro bumper design built for documentary-style productions.">
+                        <div class="portfolio-card-media">
+                            <img src="assets/img/doc-title-poster.jpg" alt="Documentary Title Card video preview" loading="lazy">
+                            <span class="play-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Title Sequence</span>
+                            <h3 class="portfolio-title">Documentary Title Card</h3>
+                            <p class="portfolio-desc">An opening title and intro bumper design built for documentary-style productions.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="assets/img/doc-wildlife.jpg" data-category="Wildlife Photography" data-title="Nature & Wildlife Series" data-desc="Observational wildlife photography documenting animals within their environment.">
+                        <div class="portfolio-card-media">
+                            <img src="assets/img/doc-wildlife.jpg" alt="Wildlife photography" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Wildlife Photography</span>
+                            <h3 class="portfolio-title">Nature & Wildlife Series</h3>
+                            <p class="portfolio-desc">Observational wildlife photography documenting animals within their environment.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="external/DOCUMENTARY/IMG_1083.jpg" data-category="Wildlife Photography" data-title="Nature & Wildlife Series II" data-desc="A second observational wildlife frame from the same nature documentary series.">
+                        <div class="portfolio-card-media">
+                            <img src="external/DOCUMENTARY/IMG_1083.jpg" alt="Wildlife photography, close portrait" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Wildlife Photography</span>
+                            <h3 class="portfolio-title">Nature & Wildlife Series II</h3>
+                            <p class="portfolio-desc">A second observational wildlife frame from the same nature documentary series.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="external/DOCUMENTARY/IMG_1084.jpg" data-category="Wildlife Photography" data-title="Nature & Wildlife Series III" data-desc="A closer detail frame continuing the nature and wildlife documentary series.">
+                        <div class="portfolio-card-media">
+                            <img src="external/DOCUMENTARY/IMG_1084.jpg" alt="Wildlife photography, detail portrait" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Wildlife Photography</span>
+                            <h3 class="portfolio-title">Nature & Wildlife Series III</h3>
+                            <p class="portfolio-desc">A closer detail frame continuing the nature and wildlife documentary series.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <section class="section" id="live-events-portfolio">
+            <div class="container">
+                <div class="section-header">
+                    <span class="portfolio-category category-centered">Category</span>
+                    <h2>Live Events</h2>
+                    <p>Uncompromising signal paths and zero-downtime broadcasting for high-stakes productions.</p>
+                </div>
+
+                <div class="portfolio-grid portfolio-section-spacer">
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="assets/img/live-games-day.jpg" data-category="Campus Event" data-title="Interactive Games Day" data-desc="Coverage of interactive activities and games throughout a live campus event.">
+                        <div class="portfolio-card-media">
+                            <img src="assets/img/live-games-day.jpg" alt="Interactive games day event" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Campus Event</span>
+                            <h3 class="portfolio-title">Interactive Games Day</h3>
+                            <p class="portfolio-desc">Coverage of interactive activities and games throughout a live campus event.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="assets/img/live-event-coverage.jpg" data-category="Event Coverage" data-title="On-Site Event Coverage" data-desc="Candid, on-the-ground coverage capturing authentic moments throughout the event.">
+                        <div class="portfolio-card-media">
+                            <img src="assets/img/live-event-coverage.jpg" alt="On-site event coverage" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Event Coverage</span>
+                            <h3 class="portfolio-title">On-Site Event Coverage</h3>
+                            <p class="portfolio-desc">Candid, on-the-ground coverage capturing authentic moments throughout the event.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="assets/img/live-guest-candid.jpg" data-category="Guest Moments" data-title="Candid Guest Portraits" data-desc="Relaxed candid portraits of guests and attendees captured between sessions.">
+                        <div class="portfolio-card-media">
+                            <img src="assets/img/live-guest-candid.jpg" alt="Candid guest portrait" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Guest Moments</span>
+                            <h3 class="portfolio-title">Candid Guest Portraits</h3>
+                            <p class="portfolio-desc">Relaxed candid portraits of guests and attendees captured between sessions.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="external/MY%20GALLERY/IMG_0029.jpg" data-category="Staff Coverage" data-title="Staff Candid Moment" data-desc="A candid staff portrait captured during live event coverage.">
+                        <div class="portfolio-card-media">
+                            <img src="external/MY%20GALLERY/IMG_0029.jpg" alt="Staff candid portrait at event" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Staff Coverage</span>
+                            <h3 class="portfolio-title">Staff Candid Moment</h3>
+                            <p class="portfolio-desc">A candid staff portrait captured during live event coverage.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="external/PICS/IMG_0038.jpg" data-category="Crowd Coverage" data-title="Event Crowd Portrait" data-desc="An attendee portrait captured candidly within a packed event crowd.">
+                        <div class="portfolio-card-media">
+                            <img src="external/PICS/IMG_0038.jpg" alt="Attendee portrait in event crowd" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Crowd Coverage</span>
+                            <h3 class="portfolio-title">Event Crowd Portrait</h3>
+                            <p class="portfolio-desc">An attendee portrait captured candidly within a packed event crowd.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="external/PICS/IMG_0988.jpg" data-category="Guest Moments" data-title="Candid Conversation Moment" data-desc="An expressive, candid moment captured mid-conversation at a live event.">
+                        <div class="portfolio-card-media">
+                            <img src="external/PICS/IMG_0988.jpg" alt="Candid conversation moment at event" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Guest Moments</span>
+                            <h3 class="portfolio-title">Candid Conversation Moment</h3>
+                            <p class="portfolio-desc">An expressive, candid moment captured mid-conversation at a live event.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="external/PICS/IMG_1071.jpg" data-category="Campus Event" data-title="Games Day: Board Games" data-desc="Guests deep in a board game during the interactive campus games day.">
+                        <div class="portfolio-card-media">
+                            <img src="external/PICS/IMG_1071.jpg" alt="Guests playing a board game at games day" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Campus Event</span>
+                            <h3 class="portfolio-title">Games Day: Board Games</h3>
+                            <p class="portfolio-desc">Guests deep in a board game during the interactive campus games day.</p>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-card" tabindex="0" role="button" data-lightbox data-type="image" data-src="external/PICS/IMG_1106.jpg" data-category="Campus Event" data-title="Games Day: Spin the Wheel" data-desc="Guests gathered around the spin-the-wheel station during the campus games day.">
+                        <div class="portfolio-card-media">
+                            <img src="external/PICS/IMG_1106.jpg" alt="Guests at spin-the-wheel game station" loading="lazy">
+                        </div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-category">Campus Event</span>
+                            <h3 class="portfolio-title">Games Day: Spin the Wheel</h3>
+                            <p class="portfolio-desc">Guests gathered around the spin-the-wheel station during the campus games day.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>KAFUI'S MEDIA</h3>
+                    <p>"Your Presence, Our Lens."</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-nav">
+                        <h4>Navigation</h4>
+                        <a href="index.html">Home</a>
+                        <a href="about.html">About</a>
+                        <a href="portfolio.html">Portfolio</a>
+                        <a href="services.html">Services</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                    <div class="footer-social">
+                        <h4>Connect</h4>
+                        <a href="https://facebook.com/kafuismedia" target="_blank">Facebook</a>
+                        <a href="https://instagram.com/kafuismedia" target="_blank">Instagram</a>
+                        <a href="https://tiktok.com/@kafuismedia" target="_blank">TikTok</a>
+                        <a href="https://youtube.com/@kafuismedia" target="_blank">YouTube</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 KAFUI'S MEDIA. All Rights Reserved.</p>
+                <p><a href="mailto:kafuismedia@gmail.com" class="footer-email">kafuismedia@gmail.com</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+        <div class="lightbox-backdrop" data-lightbox-close></div>
+        <div class="lightbox-content">
+            <button class="lightbox-close" type="button" aria-label="Close" data-lightbox-close>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+            <div class="lightbox-media" id="lightbox-media"></div>
+            <div class="lightbox-info">
+                <span class="portfolio-category" id="lightbox-category"></span>
+                <h3 id="lightbox-title"></h3>
+                <p id="lightbox-desc"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js" defer></script>
+
+    <div class="cursor-glow" aria-hidden="true"></div>
+
+</body>
+</html>

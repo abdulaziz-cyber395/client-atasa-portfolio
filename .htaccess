@@ -1,0 +1,38 @@
+# Performance: compress text-based assets and let browsers cache files
+# instead of re-downloading them on every visit. Safe defaults for the
+# standard Apache/LiteSpeed shared hosting most sites run on. If your host
+# doesn't read .htaccess files, this simply has no effect (harmless).
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType video/mp4 "access plus 1 year"
+
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType application/json "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(jpg|jpeg|png|webp|svg|mp4)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>
+
+# Keep the admin page and its data file out of search engines even if
+# robots.txt is ever removed or ignored by a crawler.
+<Files "admin.html">
+    Header set X-Robots-Tag "noindex, nofollow"
+</Files>
